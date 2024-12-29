@@ -86,3 +86,14 @@ resource "aws_instance" "app" {
     }
   }
 }
+
+data "aws_vpc" "app" {
+  id = var.aws_vpc_id
+  
+  lifecycle {
+    postcondition {
+      condition = self.enable_dns_support == true
+      error_message = "The selected VPC must have DNS support enabled."
+    }
+  }
+}
